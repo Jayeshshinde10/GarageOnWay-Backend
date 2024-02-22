@@ -138,6 +138,6 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your email address
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Example: 5 minutes
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Example: 5 minutes
     # Other settings...
 }
