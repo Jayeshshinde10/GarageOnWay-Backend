@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["name", "title", "view_birth_date"]
+    list_display = ["latitude", "longitude","Customer_id"]
 
 # Register your models here.
 admin.site.register(Customer,CustomerAdmin)

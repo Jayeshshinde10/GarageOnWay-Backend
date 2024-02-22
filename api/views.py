@@ -185,7 +185,7 @@ class GetUserName(APIView):
             user_id = decoded_token.payload.get('user_id')
             # Retrieve the user object using the user ID
             user = User.objects.get(pk=user_id)   
-            return Response({"username":user.username},status=status.HTTP_200_OK)
+            return Response({"username":user.username,'userid':user_id},status=status.HTTP_200_OK)
         except Exception as e:
             # Handle exceptions (e.g., token validation failure or user not found)
             print(f"Error: {e}")

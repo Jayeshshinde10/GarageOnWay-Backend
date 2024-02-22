@@ -15,9 +15,9 @@ class ServiceProvider(models.Model):
 # Create your models here.
 class Customer(models.Model):
     Customer_id = models.OneToOneField(User,on_delete=models.CASCADE)
-    latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
-
+    latitude = models.DecimalField(max_digits=30, decimal_places=6, null=False)
+    longitude = models.DecimalField(max_digits=30, decimal_places=6, null=False)
+    
 
 
 class Service(models.Model):
