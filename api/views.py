@@ -215,8 +215,7 @@ class CheckEntryExist(APIView):
                 customer.save()
                 print("data created and saved")
         except Exception as e:
-            print("exception is :",e)
-            
+            print("exception is :",e)            
         finally:
             print("finnaly block is called")
         return Response({'message':"data created successfully"},status=status_data)
