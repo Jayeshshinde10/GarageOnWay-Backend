@@ -193,4 +193,33 @@ class GetUserName(APIView):
         finally:
             print("Execution Completed")
 
+class CheckEntryExist(APIView):
+    def post(self, request):
+        status_data = status.HTTP_400_BAD_REQUEST
+        try:
+            user_id = int(request.data.get('Customer_id'))
+            latitude = request.data.get('latitude')
+            longitude = request.data.get('longitude')
+            if Customer.objects.filter(Customer_id = user_id).exists():
+                print(f'latitude is {latitude} and longitude is {longitude}')
+                customer= Customer.objects.get(Customer_id=user_id)
+                customer.latitude = latitude
+                customer.longitude = longitude
+                customer.save()
+                status_data= status.HTTP_201_CREATED
+            else:
+                print("the customer id is ",user_id)
+                print("customer does not exists in the table")
+                print(f'latitude is {latitude} and longitude is {longitude}')
+                customer = Customer(Customer_id=User.objects.get(pk=user_id),latitude=latitude,longitude=longitude)
+                customer.save()
+                print("data created and saved")
+        except Exception as e:
+            print("exception is :",e)
+            
+        finally:
+            print("finnaly block is called")
+        return Response({'message':"data created successfully"},status=status_data)
+
+            
 

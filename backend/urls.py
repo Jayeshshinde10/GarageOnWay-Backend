@@ -19,4 +19,5 @@ urlpatterns = [
     path('refreshtoken/',TokenRefreshView.as_view(),name='refresh token'),
     path('getUsername/',views.GetUserName.as_view(),name="get username"),
     path('verifyToken/',TokenVerifyView.as_view(),name='verify token'),
+    path('CheckEntryExists/',views.CheckEntryExist.as_view(),name="check customer entry exists")
 ]
