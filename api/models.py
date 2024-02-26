@@ -7,7 +7,7 @@ class ServiceProvider(models.Model):
     #image2 = models.ImageField()
     oraginazation_name = models.CharField(max_length=50)
     closing_time = models.TimeField()
-    opening_time= models.TimeField()
+    opening_time = models.TimeField()
     latitude = models.DecimalField(max_digits=30, decimal_places=6, null=False,default= 0)
     longitude = models.DecimalField(max_digits=30, decimal_places=6, null=False ,default =0)
     near_by_landmark = models.CharField(max_length=50,default='nothing')
@@ -25,6 +25,7 @@ class Service(models.Model):
     name = models.CharField(max_length=100)
     serviceProvider_id = models.ForeignKey(ServiceProvider,on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
+    
 
 class Order(models.Model):
     Service_id = models.ForeignKey(Service,on_delete=models.CASCADE)

@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import AccessToken
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 def get_username_from_access_token(access_token):
     try:
@@ -77,6 +77,7 @@ class RegisterView(APIView):
             lname = request.data.get('lname')
             email = request.data.get('email')
             password = request.data.get('password')
+            isServiceProvider = request.data.get('isServiceProvider')
             subject = 'Account Created Successfully 😀'
             message = 'Hare Krishna , You have Created account Successfully'
             from_email = 'garageonway@gmail.com'
@@ -87,6 +88,11 @@ class RegisterView(APIView):
             print("username is ",username)
             print("User does not exist.")
             user =  User.objects.create_user(username, email, password)
+            if isServiceProvider:
+                target_group = Group.objects.get(name="ServiceProviders")
+                user.groups.add(target_group)
+                print("user added successfully in service Provider group")
+            print("reached to send email 2")
             send_mail(subject, message, from_email, recipient_list)
             response = {
                 'data':"Account created successfully"

@@ -2,6 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 import environ
 import environ
+
 # Initialise environment variables
 env = environ.Env()
 
@@ -128,14 +129,22 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # settings.py
 
-# Email Configuration
-EMAIL_BACKEND = env('EMAIL_BACKEND')
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')  # Use the appropriate port for your SMTP server
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')  # Use TLS for secure connection
-
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587  
+EMAIL_USE_TLS=True 
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your email address
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL=f"{env('DEFAULT_FROM_EMAIL')}"
+
+# Email Configuration
+# EMAIL_BACKEND = env('EMAIL_BACKEND')
+# EMAIL_HOST = env('EMAIL_HOST')
+# EMAIL_PORT = env('EMAIL_PORT')  # Use the appropriate port for your SMTP server
+# EMAIL_USE_TLS = env('EMAIL_USE_TLS')  # Use TLS for secure connection
+
+# EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your email address
+# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Example: 5 minutes
