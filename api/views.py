@@ -45,6 +45,10 @@ class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
+class VehicleViewSet(ModelViewSet):
+    queryset= Vehicles.objects.all()
+    serializer_class=VehicleSerializer
+
 
 
 class LoginView(APIView):
@@ -55,14 +59,15 @@ class LoginView(APIView):
         print("received username is ",username)
         print("received password is ",password)
         user = authenticate(request, username=username, password=password)
-
         if user:
             login(request, user)
             refresh = RefreshToken.for_user(user)
+            groups = user.groups.filter(name='ServiceProviders').exists()
             print("user logged in ")
             return Response({
                 'access_token': str(refresh.access_token),
                 'refresh_token': str(refresh),
+                'isServiceProvider':groups,
             }, status=status.HTTP_200_OK)
         
         else:
@@ -134,6 +139,10 @@ class CheckUsernameExists(APIView):
         finally:
             return Response(response,status=status_data)
         
+
+
+
+        
 class CheckEmailExists(APIView):
     def post(self,request):
         response = dict({})
@@ -191,7 +200,9 @@ class GetUserName(APIView):
             user_id = decoded_token.payload.get('user_id')
             # Retrieve the user object using the user ID
             user = User.objects.get(pk=user_id)   
-            return Response({"username":user.username,'userid':user_id},status=status.HTTP_200_OK)
+            groups = user.groups.filter(name='ServiceProviders').exists() 
+            print("is serviceProvider ",groups)
+            return Response({"username":user.username,'userid':user_id,'serviceProvider':groups},status=status.HTTP_200_OK)
         except Exception as e:
             # Handle exceptions (e.g., token validation failure or user not found)
             print(f"Error: {e}")
@@ -202,29 +213,35 @@ class GetUserName(APIView):
 class CheckEntryExist(APIView):
     def post(self, request):
         status_data = status.HTTP_400_BAD_REQUEST
+        data = True
         try:
-            user_id = int(request.data.get('Customer_id'))
-            latitude = request.data.get('latitude')
-            longitude = request.data.get('longitude')
-            if Customer.objects.filter(Customer_id = user_id).exists():
-                print(f'latitude is {latitude} and longitude is {longitude}')
-                customer= Customer.objects.get(Customer_id=user_id)
-                customer.latitude = latitude
-                customer.longitude = longitude
-                customer.save()
-                status_data= status.HTTP_201_CREATED
+            user_id = int(request.data.get('user_id'))
+            if ServiceProvider.objects.filter(User_id = user_id).exists():
+                print(f'service provider is {e}')
             else:
-                print("the customer id is ",user_id)
-                print("customer does not exists in the table")
-                print(f'latitude is {latitude} and longitude is {longitude}')
-                customer = Customer(Customer_id=User.objects.get(pk=user_id),latitude=latitude,longitude=longitude)
-                customer.save()
-                print("data created and saved")
+                data = False
         except Exception as e:
+            status_data= status.HTTP_400_BAD_REQUEST
             print("exception is :",e)            
         finally:
             print("finnaly block is called")
-        return Response({'message':"data created successfully"},status=status_data)
+        return Response({'message':data},status=status_data)
+    
 
-            
+class UserLogoutView(APIView):
+    def post(self,request):
+        staus_data = status.HTTP_401_UNAUTHORIZED
+        try:
+            username = request.data.get('username')
+            if username:
+                logout(request)
+                status_data = status.HTTP_200_OK
+                data = 'user logged out successfully'
+        except Exception as e:
+            print(f"the exception as {e}")
+            data = f'the error is {e}'
+            status_data= status.HTTP_400_BAD_REQUEST
+        finally:
+            return Response({'data':data},status=status_data)
+
 

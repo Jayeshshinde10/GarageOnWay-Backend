@@ -150,3 +150,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Example: 5 minutes
     # Other settings...
 }
+
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"

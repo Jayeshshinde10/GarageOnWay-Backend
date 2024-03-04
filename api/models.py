@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 
 class ServiceProvider(models.Model):
     user_id = models.OneToOneField(User,on_delete=models.CASCADE)
-    #image1 = models.ImageField()
-    #image2 = models.ImageField()
-    oraginazation_name = models.CharField(max_length=50)
+    image1 = models.ImageField(upload_to='workshop/image1' ,default='workshop/default.jpg')
+    image2 = models.ImageField(upload_to='workshop/image2',default='workshop/default.jpg')
+    orginazation_name = models.CharField(max_length=50)
     closing_time = models.TimeField()
     opening_time = models.TimeField()
     latitude = models.DecimalField(max_digits=30, decimal_places=6, null=False,default= 0)
@@ -28,12 +28,17 @@ class Service(models.Model):
     
 
 class Order(models.Model):
+    customer_id = models.ForeignKey(User,on_delete=models.CASCADE,default=0)
     Service_id = models.ForeignKey(Service,on_delete=models.CASCADE)
     ServiceProvider_id = models.ForeignKey(ServiceProvider , on_delete=models.CASCADE)
     #customer_id = foreignkey from customer table
     is_Approved = models.BooleanField(default=False)
     is_Completed = models.BooleanField(default = False)
     is_paid = models.BooleanField(default=False)
-    #vehicle_name = vehicles will come here 
-    #description = description of problem will come here. 
+    vehicle_name = models.CharField(max_length=20,default='') 
+    #description = description of problem will come here.
+    
+
+class Vehicles(models.Model):
+    vehicle_name = models.CharField(max_length=30,default='')
 

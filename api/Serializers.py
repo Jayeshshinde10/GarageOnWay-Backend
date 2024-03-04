@@ -5,8 +5,6 @@ class OrderSerializer(ModelSerializer):
         model = Order
         fields = '__all__'
 
-
-
 class ServiceProviderSerializer(ModelSerializer):
     class Meta:
         model = ServiceProvider  # Use '=' instead of ':'
@@ -15,4 +13,9 @@ class ServiceProviderSerializer(ModelSerializer):
 class CustomerSerializer(ModelSerializer):
     class Meta:
         model= Customer
+        fields='__all__'
+
+class VehicleSerializer(ModelSerializer):
+    class Meta:
+        model= Vehicles
         fields='__all__'
